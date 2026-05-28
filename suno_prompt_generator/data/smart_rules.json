@@ -1,0 +1,613 @@
+{
+  "global_rules": {
+    "instrumental": {
+      "add": ["no vocals", "no lyrics"]
+    },
+    "vocal track": {
+      "add": ["emotional vocals", "clear vocal presence"]
+    },
+    "beat": {
+      "add": ["strong groove", "loopable beat structure"]
+    },
+    "background music": {
+      "add": ["non-intrusive background music", "subtle melodic motif", "soft dynamics"]
+    },
+    "cinematic soundtrack": {
+      "add": ["cinematic structure", "wide stereo space", "dramatic atmosphere"]
+    }
+  },
+  "mode_rules": {
+    "smart_bgm": {
+      "add": [
+        "loopable structure",
+        "non-intrusive background music",
+        "low intensity",
+        "subtle melodic motif",
+        "soft evolving atmosphere",
+        "background-friendly mix",
+        "no loud climax",
+        "no distracting lead melody"
+      ]
+    }
+  },
+  "genre_rules": {
+    "dark boom bap": {
+      "add": [
+        "dusty boom bap drums",
+        "vinyl crackle",
+        "raw hip-hop scratches",
+        "minor key piano",
+        "grimy underground atmosphere",
+        "dirty analog texture"
+      ],
+      "avoid": ["EDM drop", "bright pop vocals"]
+    },
+    "classic boom bap": {
+      "add": [
+        "dusty drum break",
+        "vinyl scratches",
+        "jazzy piano loop",
+        "upright bass",
+        "old school hip-hop groove",
+        "sample-based texture"
+      ]
+    },
+    "underground hip-hop": {
+      "add": [
+        "raw drums",
+        "dark sample loop",
+        "vinyl crackle",
+        "gritty bassline",
+        "street atmosphere",
+        "lo-fi texture"
+      ]
+    },
+    "trap": {
+      "add": [
+        "808 bass",
+        "sharp hi-hats",
+        "snare rolls",
+        "dark synth lead",
+        "modern trap drums",
+        "hard hitting rhythm"
+      ]
+    },
+    "dark trap": {
+      "add": [
+        "deep 808 bass",
+        "eerie synth pad",
+        "minor key melody",
+        "cold atmosphere",
+        "sharp hi-hat rolls",
+        "heavy trap drums"
+      ]
+    },
+    "phonk": {
+      "add": [
+        "cowbell melody",
+        "distorted bass",
+        "Memphis rap vocal chops",
+        "tape saturation",
+        "gritty drums",
+        "dark street atmosphere"
+      ]
+    },
+    "ambient": {
+      "add": [
+        "soft evolving layers",
+        "long reverb",
+        "wide stereo space",
+        "slow atmospheric movement",
+        "minimal arrangement"
+      ]
+    },
+    "dark ambient": {
+      "add": [
+        "deep drone",
+        "low frequency rumble",
+        "distant echo",
+        "cold atmospheric texture",
+        "slow evolving layers",
+        "haunting mood"
+      ]
+    },
+    "fantasy ambient": {
+      "add": [
+        "harp",
+        "wooden flute",
+        "soft strings",
+        "ethereal choir",
+        "ancient atmosphere",
+        "wide stereo space"
+      ]
+    },
+    "EDM": {
+      "add": [
+        "electronic drums",
+        "sidechain compression",
+        "bright synth lead",
+        "pulsing bassline",
+        "build-up",
+        "drop section"
+      ]
+    },
+    "house": {
+      "add": [
+        "four-on-the-floor beat",
+        "warm bassline",
+        "groovy piano chords",
+        "soft synth stabs",
+        "danceable rhythm"
+      ]
+    },
+    "techno": {
+      "add": [
+        "driving kick",
+        "hypnotic synth sequence",
+        "industrial texture",
+        "repetitive rhythm",
+        "dark club atmosphere"
+      ]
+    },
+    "drum and bass": {
+      "add": [
+        "fast breakbeat drums",
+        "deep sub bass",
+        "rolling rhythm",
+        "atmospheric pads",
+        "high energy"
+      ]
+    },
+    "cinematic horror": {
+      "add": [
+        "dissonant strings",
+        "deep drone",
+        "waterphone",
+        "sul ponticello strings",
+        "sudden string stabs",
+        "psychological tension"
+      ]
+    },
+    "psychological horror ambient": {
+      "add": [
+        "unsettling drones",
+        "distant whispers",
+        "detuned piano",
+        "cold reverb",
+        "disturbing atmosphere",
+        "slow tension build-up"
+      ]
+    },
+    "dark fantasy soundtrack": {
+      "add": [
+        "low strings",
+        "deep cello",
+        "distant choir",
+        "ancient war horn",
+        "tragic atmosphere",
+        "cinematic reverb"
+      ]
+    },
+    "1960s cartoon noir soundtrack": {
+      "add": [
+        "muted trumpet",
+        "upright bass",
+        "detuned piano",
+        "vibraphone",
+        "brush drums",
+        "dusty old recording",
+        "vintage film texture"
+      ]
+    },
+    "cartoon noir score": {
+      "add": [
+        "smoky jazz atmosphere",
+        "muted brass",
+        "walking bass",
+        "quirky vibraphone",
+        "eerie piano chords",
+        "old animation vibe"
+      ]
+    },
+    "vintage horror cartoon music": {
+      "add": [
+        "detuned organ",
+        "spooky strings",
+        "theremin-like lead",
+        "old film grain",
+        "playful but eerie mood"
+      ]
+    },
+    "Slavic dark folk": {
+      "add": [
+        "gusli",
+        "tagelharpa",
+        "wooden flute",
+        "Slavic folk chanting",
+        "low drone",
+        "ancient melancholic atmosphere"
+      ]
+    },
+    "Nordic dark folk": {
+      "add": [
+        "tagelharpa",
+        "nyckelharpa",
+        "shamanic frame drum",
+        "deep throat chanting",
+        "cold northern atmosphere",
+        "drone-based harmony"
+      ]
+    },
+    "Middle Eastern fantasy ambient": {
+      "add": [
+        "oud",
+        "ney flute",
+        "duduk",
+        "frame drum",
+        "Arabic vocal ornamentation",
+        "warm desert atmosphere"
+      ]
+    },
+    "Japanese temple ambient": {
+      "add": [
+        "shakuhachi",
+        "koto",
+        "temple bells",
+        "taiko drum",
+        "Japanese monk chanting",
+        "sacred minimal atmosphere"
+      ]
+    }
+  },
+  "mood_rules": {
+    "melancholic": {
+      "add": ["minor key", "slow tempo", "soft piano", "deep cello", "long reverb"]
+    },
+    "dark": {
+      "add": ["minor key atmosphere", "low frequencies", "deep bass", "cold texture"]
+    },
+    "lonely": {
+      "add": ["sparse notes", "distant reverb", "solo instrument", "wide empty space"]
+    },
+    "eerie": {
+      "add": ["detuned tones", "dissonant harmonies", "distant echo", "unsettling texture"]
+    },
+    "ritualistic": {
+      "add": ["repetitive chanting", "shamanic frame drum", "drone-based harmony", "hypnotic repetition"]
+    },
+    "aggressive": {
+      "add": ["hard drums", "distorted bass", "sharp attacks", "high intensity"]
+    },
+    "dreamlike": {
+      "add": ["ethereal pads", "soft reverb", "floating melody", "slow evolving layers"]
+    },
+    "nostalgic": {
+      "add": ["warm analog texture", "soft tape hiss", "gentle melody", "bittersweet mood"]
+    },
+    "haunting": {
+      "add": ["distant choir", "cold reverb", "slow tension build-up", "uncanny atmosphere"]
+    },
+    "ritual": {
+      "add": ["ancient chanting", "frame drum", "deep drone", "hypnotic repetition"]
+    }
+  },
+  "instrument_rules": {
+    "piano": {
+      "add": ["soft touch", "slow chord changes", "long reverb"]
+    },
+    "detuned piano": {
+      "add": ["old room ambience", "haunting mood", "vintage texture"]
+    },
+    "dark strings": {
+      "add": ["tremolo strings", "dissonant harmonies", "cinematic tension"]
+    },
+    "violin": {
+      "add": ["expressive bowing", "legato melody", "emotional phrasing"]
+    },
+    "cello": {
+      "add": ["deep warm tone", "slow legato", "melancholic atmosphere"]
+    },
+    "vinyl scratches": {
+      "add": ["turntable scratching", "raw hip-hop cuts", "dusty vinyl texture"]
+    },
+    "duduk": {
+      "add": ["ancient atmosphere", "lonely melody", "long reverb"]
+    },
+    "shakuhachi": {
+      "add": ["breathy flute tone", "sparse notes", "meditative atmosphere"]
+    },
+    "tagelharpa": {
+      "add": ["Nordic dark folk", "drone-based harmony", "ancient ritual mood"]
+    },
+    "waterphone": {
+      "add": ["psychological horror ambient", "unsettling texture", "distant metallic resonance"]
+    },
+    "gusli": {
+      "add": ["Slavic dark folk", "ancient melancholic atmosphere", "soft plucked resonance"]
+    },
+    "oud": {
+      "add": ["warm desert atmosphere", "middle eastern ornamentation", "expressive plucked melody"]
+    },
+    "ney flute": {
+      "add": ["breathy flute tone", "desert atmosphere", "sparse melodic phrasing"]
+    }
+  },
+  "vocal_rules": {
+    "soft fragile male vocals": {
+      "add": ["breathy delivery", "emotional phrasing", "intimate vocal mix"]
+    },
+    "breathy female vocals": {
+      "add": ["ethereal vocal tone", "soft reverb", "dreamlike atmosphere"]
+    },
+    "broken emotional vocals": {
+      "add": ["cracked voice", "raw emotional delivery", "melancholic lyrics"]
+    },
+    "whispered phrases": {
+      "add": ["close vocal texture", "intimate atmosphere", "soft delay"]
+    },
+    "ritual chanting": {
+      "add": ["repetitive chanting", "ancient atmosphere", "deep drone"]
+    },
+    "shamanic chanting": {
+      "add": ["frame drum", "hypnotic repetition", "spirit calling vocals"]
+    },
+    "Arabic melismatic singing": {
+      "add": ["Middle Eastern ornamentation", "emotional vocal runs", "desert atmosphere"]
+    },
+    "Japanese monk chanting": {
+      "add": ["temple ambience", "low drone", "sacred atmosphere"]
+    },
+    "ancient Slavic chanting": {
+      "add": ["low drone", "folk resonance", "ritual atmosphere"]
+    },
+    "wordless humming": {
+      "add": ["soft choir layer", "dreamlike atmosphere", "gentle reverb"]
+    }
+  },
+  "texture_rules": {
+    "lo-fi texture": {
+      "add": ["tape hiss", "vinyl crackle", "dusty sound"]
+    },
+    "vinyl crackle": {
+      "add": ["dusty vinyl texture", "warm analog texture"]
+    },
+    "tape hiss": {
+      "add": ["warped tape sound", "degraded vintage audio"]
+    },
+    "analog warmth": {
+      "add": ["warm analog texture", "soft saturation"]
+    },
+    "long reverb": {
+      "add": ["wide stereo space", "distant echo"]
+    },
+    "distant echo": {
+      "add": ["cold atmospheric texture", "empty space"]
+    },
+    "old film texture": {
+      "add": ["dusty old recording", "vintage film grain"]
+    },
+    "degraded vintage audio": {
+      "add": ["dusty old recording", "warped tape sound"]
+    },
+    "wide stereo space": {
+      "add": ["immersive space", "open atmosphere"]
+    }
+  },
+  "performance_rules": {
+    "minimalistic arrangement": {
+      "add": ["sparse instrumentation", "clear motifs"]
+    },
+    "slow tempo": {
+      "add": ["gradual build-up", "breathing space"]
+    },
+    "broken rhythm": {
+      "add": ["syncopated accents", "uneven pulse"]
+    },
+    "unresolved chords": {
+      "add": ["harmonic tension", "suspended resolution"]
+    },
+    "dissonant harmonies": {
+      "add": ["psychological tension", "uneasy progression"]
+    },
+    "sudden stabs": {
+      "add": ["sharp attacks", "dramatic accents"]
+    },
+    "hypnotic repetition": {
+      "add": ["loopable beat structure", "repetitive pulse"]
+    },
+    "gradual build-up": {
+      "add": ["slow tension build-up", "controlled dynamics"]
+    },
+    "cinematic structure": {
+      "add": ["wide dynamic arc", "dramatic atmosphere"]
+    },
+    "raw underground sound": {
+      "add": ["dirty analog texture", "gritty low end"]
+    },
+    "loopable structure": {
+      "add": ["seamless loop", "stable ending"]
+    },
+    "strong groove": {
+      "add": ["tight rhythm section", "steady pulse"]
+    }
+  },
+  "collection_rules": {
+    "Dark Fantasy": {
+      "add": ["low strings", "deep cello", "distant choir", "ancient atmosphere", "dark cinematic soundscape"]
+    },
+    "Hip-Hop": {
+      "add": ["dusty drums", "vinyl crackle", "turntable scratching", "raw bassline"]
+    },
+    "Cartoon Noir": {
+      "add": ["muted trumpet", "upright bass", "detuned piano", "vibraphone", "vintage film texture"]
+    },
+    "Horror": {
+      "add": ["deep drone", "dissonant strings", "psychological tension", "cold reverb"]
+    },
+    "Ambient": {
+      "add": ["soft evolving layers", "long reverb", "minimal arrangement", "wide stereo space"]
+    },
+    "Ritual": {
+      "add": ["ritual chanting", "shamanic frame drum", "deep drone", "ancient atmosphere"]
+    },
+    "EDM": {
+      "add": ["electronic drums", "sidechain compression", "bright synth lead", "pulsing bassline"]
+    },
+    "Slavic": {
+      "add": ["gusli", "tagelharpa", "wooden flute", "Slavic folk chanting"]
+    },
+    "Middle Eastern": {
+      "add": ["oud", "ney flute", "duduk", "Arabic vocal ornamentation"]
+    },
+    "Japanese": {
+      "add": ["shakuhachi", "koto", "temple bells", "Japanese monk chanting"]
+    }
+  },
+  "conflict_rules": [
+    {
+      "if_contains": ["background music"],
+      "conflicts_with": ["EDM drop", "aggressive drums", "catchy pop hook", "big heroic climax"],
+      "message_ru": "Для фоновой музыки лучше избегать EDM drop, агрессивных барабанов и большой кульминации.",
+      "message_en": "For background music, avoid EDM drops, aggressive drums and big climaxes."
+    },
+    {
+      "if_contains": ["instrumental"],
+      "conflicts_with": ["lead vocals", "rap vocals", "pop vocals"],
+      "message_ru": "Выбран instrumental, но есть вокальные токены.",
+      "message_en": "Instrumental is selected, but vocal tokens are present."
+    },
+    {
+      "if_contains": ["dark ambient"],
+      "conflicts_with": ["upbeat happy melody", "bright pop hook"],
+      "message_ru": "Dark ambient конфликтует с весёлой поп-мелодией.",
+      "message_en": "Dark ambient conflicts with upbeat pop melody."
+    },
+    {
+      "if_contains": ["trap"],
+      "conflicts_with": ["medieval lute", "Celtic harp"],
+      "message_ru": "Trap и средневековые инструменты могут дать странный результат. Это не ошибка, но стиль будет гибридным.",
+      "message_en": "Trap and medieval instruments may create a hybrid result."
+    }
+  ],
+  "smart_limits": {
+    "max_total_added": 14,
+    "max_genres": 2,
+    "max_instruments": 5,
+    "max_instruments_total": 6,
+    "max_instruments_per_group": 2,
+    "max_rare_instruments": 2,
+    "max_sound_design_fx": 3,
+    "max_vocals": 3,
+    "max_moods": 4,
+    "max_textures": 4,
+    "max_performance": 4,
+    "max_negative": 4,
+    "max_structure_tags": 3
+  },
+  "structure_tags_general": [
+    {"en": "[Intro]", "ru": "вступление"},
+    {"en": "[Verse]", "ru": "куплет"},
+    {"en": "[Chorus]", "ru": "припев"},
+    {"en": "[Bridge]", "ru": "бридж"},
+    {"en": "[Outro]", "ru": "аутро"},
+    {"en": "[Instrumental]", "ru": "инструментал"},
+    {"en": "[Instrumental Break]", "ru": "инструментальная пауза"},
+    {"en": "[Beat Drop]", "ru": "дроп"},
+    {"en": "[Build Up]", "ru": "нарастание"},
+    {"en": "[Scratch Break]", "ru": "скрэтч-пауза"},
+    {"en": "[Piano Intro]", "ru": "пианино-интро"},
+    {"en": "[String Section]", "ru": "струнная секция"},
+    {"en": "[Choir Enters]", "ru": "входит хор"},
+    {"en": "[Ambient Interlude]", "ru": "эмбиентная интерлюдия"},
+    {"en": "[Fade Out]", "ru": "затухание"}
+  ],
+  "genre_random_rules": {
+    "max_total": 3,
+    "sub_min": 1,
+    "sub_max": 2,
+    "hybrid_chance": 0.35,
+    "hybrid_candidates": [
+      "genre_hybrid_modern",
+      "genre_electronic_general",
+      "genre_ambient",
+      "genre_cinematic_score",
+      "genre_world_ethnic"
+    ]
+  },
+  "genre_smart_neighbors": {
+    "dark trap": ["drill", "dark drill", "cinematic trap"],
+    "trap": ["melodic trap", "drill"],
+    "drill": ["dark drill", "trap"],
+    "boom bap": ["classic boom bap", "jazz rap"],
+    "classic boom bap": ["boom bap", "jazz rap"],
+    "phonk": ["dark phonk", "drift phonk", "memphis phonk"],
+    "dark phonk": ["phonk", "memphis phonk"],
+    "cloud rap": ["emo rap", "dreamy rap"],
+    "emo rap": ["cloud rap", "sad emo rap"],
+    "dark ambient": ["drone ambient", "cinematic ambient", "ritual ambient"],
+    "ambient": ["cinematic ambient", "ethereal ambient"],
+    "cinematic soundtrack": ["film score", "orchestral score", "hybrid orchestral score"],
+    "horror soundtrack": ["cinematic horror", "psychological horror ambient"],
+    "dark fantasy soundtrack": ["fantasy ambient", "dungeon synth"],
+    "jazz noir": ["noir jazz", "smoky jazz", "film noir jazz"],
+    "house": ["deep house", "melodic house", "tech house"],
+    "techno": ["dark techno", "minimal techno", "melodic techno"],
+    "trance": ["progressive trance", "dark trance"],
+    "drum and bass": ["liquid drum and bass", "neurofunk", "jungle"],
+    "post-rock": ["dark post-rock", "shoegaze"],
+    "gothic rock": ["darkwave", "coldwave"],
+    "folk": ["dark folk", "neo-folk"],
+    "world music": ["ethno ambient", "world fusion"],
+    "Slavic folk": ["Slavic dark folk", "Slavic ritual music"],
+    "Nordic folk": ["Nordic dark folk", "Viking folk"],
+    "Middle Eastern music": ["Middle Eastern ambient", "desert ambient"],
+    "Japanese traditional music": ["Japanese temple ambient", "Japanese fantasy music"],
+    "Indian classical music": ["Indian ambient", "raga-inspired ambient"],
+    "retro soundtrack": ["vintage soundtrack", "old film soundtrack"],
+    "cartoon soundtrack": ["dark cartoon music", "vintage cartoon jazz"],
+    "experimental": ["avant-garde", "noise music", "glitch"],
+    "gothic music": ["darkwave", "ethereal wave"]
+  },
+  "quality_limits": {
+    "max_quality_tokens_total": 6,
+    "max_quality_tokens_per_group": 2,
+    "warn_if_more_than": 6
+  },
+  "quality_presets": [
+    {
+      "name": "Clean Studio",
+      "ru": "Чистая студия",
+      "tokens": ["studio quality", "clean mix", "balanced EQ", "wide stereo", "clean master", "no muddy mix"]
+    },
+    {
+      "name": "Warm Analog",
+      "ru": "Тёплый аналог",
+      "tokens": ["analog warmth", "tape saturation", "warm low end", "soft compression", "smooth high end"]
+    },
+    {
+      "name": "Lo-Fi Tape",
+      "ru": "Lo-Fi плёнка",
+      "tokens": ["lo-fi texture", "tape hiss", "vinyl crackle", "warped tape", "dusty old recording"]
+    },
+    {
+      "name": "Modern Trap Mix",
+      "ru": "Современный trap-микс",
+      "tokens": ["modern trap mix", "deep 808 bass", "tight low end", "crisp hi-hats", "loud but clean master"]
+    },
+    {
+      "name": "Cinematic Wide",
+      "ru": "Широкое кино",
+      "tokens": ["cinematic mix", "wide stereo image", "deep cinematic reverb", "orchestral hall sound", "wide dynamic range"]
+    },
+    {
+      "name": "Vocal Forward",
+      "ru": "Вокал вперёд",
+      "tokens": ["clear vocals", "vocal forward mix", "centered lead vocal", "smooth vocal compression", "no buried vocals"]
+    },
+    {
+      "name": "Dusty Boom Bap",
+      "ru": "Пыльный boom bap",
+      "tokens": ["dusty drums", "vinyl crackle", "dirty analog texture", "warm low end", "sample-based texture"]
+    }
+  ]
+}

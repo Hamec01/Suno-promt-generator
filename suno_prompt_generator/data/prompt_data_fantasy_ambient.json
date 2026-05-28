@@ -1,0 +1,180 @@
+{
+  "track_type": [
+    { "en": "background music", "ru": "фоновая музыка" },
+    { "en": "game soundtrack", "ru": "саундтрек для игры" },
+    { "en": "fantasy game music", "ru": "фэнтези музыка для игры" },
+    { "en": "ambient soundtrack", "ru": "эмбиентный саундтрек" },
+    { "en": "cinematic background music", "ru": "кинематографичная фоновая музыка" },
+    { "en": "loopable background music", "ru": "зацикленная фоновая музыка" },
+    { "en": "non-intrusive game music", "ru": "ненавязчивая игровая музыка" }
+  ],
+  "genres": [
+    { "en": "ambient", "ru": "эмбиент" },
+    { "en": "dark ambient", "ru": "тёмный эмбиент" },
+    { "en": "fantasy ambient", "ru": "фэнтези эмбиент" },
+    { "en": "medieval ambient", "ru": "средневековый эмбиент" },
+    { "en": "cinematic ambient", "ru": "кинематографичный эмбиент" },
+    { "en": "orchestral ambient", "ru": "оркестровый эмбиент" },
+    { "en": "ethereal ambient", "ru": "эфирный эмбиент" },
+    { "en": "mystical ambient", "ru": "мистический эмбиент" },
+    { "en": "dungeon ambient", "ru": "эмбиент подземелья" },
+    { "en": "forest ambient", "ru": "лесной эмбиент" },
+    { "en": "village ambient", "ru": "деревенский эмбиент" },
+    { "en": "castle ambient", "ru": "замковый эмбиент" },
+    { "en": "tavern background music", "ru": "фоновая музыка таверны" },
+    { "en": "ancient ruins ambient", "ru": "эмбиент древних руин" },
+    { "en": "sacred temple ambient", "ru": "эмбиент священного храма" }
+  ],
+  "game_locations": [
+    { "en": "peaceful medieval village", "ru": "мирная средневековая деревня" },
+    { "en": "lonely border town", "ru": "одинокий пограничный город" },
+    { "en": "cold stone castle", "ru": "холодный каменный замок" },
+    { "en": "ancient forest", "ru": "древний лес" },
+    { "en": "foggy swamp", "ru": "туманное болото" },
+    { "en": "abandoned dungeon", "ru": "заброшенное подземелье" },
+    { "en": "forgotten ruins", "ru": "забытые руины" },
+    { "en": "sacred temple", "ru": "священный храм" },
+    { "en": "dark cave", "ru": "тёмная пещера" },
+    { "en": "snowy mountain pass", "ru": "снежный горный перевал" },
+    { "en": "royal capital", "ru": "королевская столица" },
+    { "en": "war camp", "ru": "военный лагерь" },
+    { "en": "old tavern", "ru": "старая таверна" },
+    { "en": "market square", "ru": "рыночная площадь" },
+    { "en": "blacksmith district", "ru": "кузнечный район" }
+  ],
+  "mood": [
+    { "en": "calm", "ru": "спокойно" },
+    { "en": "peaceful", "ru": "мирно" },
+    { "en": "mysterious", "ru": "загадочно" },
+    { "en": "melancholic", "ru": "меланхолично" },
+    { "en": "lonely", "ru": "одиноко" },
+    { "en": "ancient", "ru": "древне" },
+    { "en": "sacred", "ru": "сакрально" },
+    { "en": "cold and distant", "ru": "холодно и отдалённо" },
+    { "en": "dark but beautiful", "ru": "мрачно, но красиво" },
+    { "en": "quiet tension", "ru": "тихое напряжение" },
+    { "en": "subtle danger", "ru": "скрытая опасность" },
+    { "en": "forgotten and old", "ru": "забытое и старое" },
+    { "en": "dreamlike", "ru": "сонное, как во сне" },
+    { "en": "ethereal", "ru": "эфирное" },
+    { "en": "haunting", "ru": "тревожно-призрачное" }
+  ],
+  "instruments": [
+    { "en": "soft piano", "ru": "мягкое пианино" },
+    { "en": "slow melancholic piano", "ru": "медленное меланхоличное пианино" },
+    { "en": "harp", "ru": "арфа" },
+    { "en": "medieval lute", "ru": "средневековая лютня" },
+    { "en": "nylon guitar", "ru": "нейлоновая гитара" },
+    { "en": "low strings", "ru": "низкие струнные" },
+    { "en": "soft strings", "ru": "мягкие струнные" },
+    { "en": "distant cello", "ru": "далёкая виолончель" },
+    { "en": "wooden flute", "ru": "деревянная флейта" },
+    { "en": "distant flute", "ru": "далёкая флейта" },
+    { "en": "pan flute", "ru": "пан-флейта" },
+    { "en": "choir pads", "ru": "хоровые пэды" },
+    { "en": "ethereal choir", "ru": "эфирный хор" },
+    { "en": "deep drone", "ru": "глубокий дрон" },
+    { "en": "soft bells", "ru": "мягкие колокольчики" },
+    { "en": "temple bells", "ru": "храмовые колокола" },
+    { "en": "frame drum", "ru": "рамочный барабан" },
+    { "en": "tribal percussion", "ru": "племенная перкуссия" },
+    { "en": "subtle percussion", "ru": "тонкая перкуссия" }
+  ],
+  "playing_techniques": [
+    { "en": "minimalistic arrangement", "ru": "минималистичная аранжировка" },
+    { "en": "slow evolving layers", "ru": "медленно развивающиеся слои" },
+    { "en": "sparse notes", "ru": "редкие ноты" },
+    { "en": "soft sustained notes", "ru": "мягкие тянущиеся ноты" },
+    { "en": "gentle arpeggios", "ru": "нежные арпеджио" },
+    { "en": "slow chord changes", "ru": "медленная смена аккордов" },
+    { "en": "droning background", "ru": "тянущийся фон" },
+    { "en": "floating melody", "ru": "плавающая мелодия" },
+    { "en": "subtle melodic motif", "ru": "тонкий мелодический мотив" },
+    { "en": "no strong drums", "ru": "без сильных барабанов" },
+    { "en": "no aggressive rhythm", "ru": "без агрессивного ритма" },
+    { "en": "loopable structure", "ru": "структура для зацикливания" }
+  ],
+  "sound_texture": [
+    { "en": "long reverb", "ru": "длинный реверб" },
+    { "en": "distant echo", "ru": "далёкое эхо" },
+    { "en": "wide stereo space", "ru": "широкое стерео-пространство" },
+    { "en": "soft atmosphere", "ru": "мягкая атмосфера" },
+    { "en": "warm analog texture", "ru": "тёплая аналоговая текстура" },
+    { "en": "cold airy texture", "ru": "холодная воздушная текстура" },
+    { "en": "subtle wind ambience", "ru": "лёгкий шум ветра" },
+    { "en": "room ambience", "ru": "ощущение помещения" },
+    { "en": "large hall reverb", "ru": "реверб большого зала" },
+    { "en": "ancient stone hall ambience", "ru": "атмосфера древнего каменного зала" },
+    { "en": "forest ambience", "ru": "лесная атмосфера" },
+    { "en": "dungeon ambience", "ru": "атмосфера подземелья" }
+  ],
+  "vocal_layers": [
+    { "en": "wordless choir", "ru": "хор без слов" },
+    { "en": "distant female choir", "ru": "далёкий женский хор" },
+    { "en": "low male choir", "ru": "низкий мужской хор" },
+    { "en": "soft humming", "ru": "тихое мычание" },
+    { "en": "ritual humming", "ru": "ритуальное мычание" },
+    { "en": "ancient chanting", "ru": "древние напевы" },
+    { "en": "sacred chanting", "ru": "сакральные напевы" },
+    { "en": "whispered chants", "ru": "шёпотные напевы" },
+    { "en": "distant ritual voices", "ru": "далёкие ритуальные голоса" },
+    { "en": "unknown ancient language", "ru": "неизвестный древний язык" }
+  ],
+  "tempo_energy": [
+    { "en": "slow tempo", "ru": "медленный темп" },
+    { "en": "very slow tempo", "ru": "очень медленный темп" },
+    { "en": "medium slow tempo", "ru": "средне-медленный темп" },
+    { "en": "calm pacing", "ru": "спокойное движение" },
+    { "en": "non-intrusive", "ru": "ненавязчиво" },
+    { "en": "low intensity", "ru": "низкая интенсивность" },
+    { "en": "subtle build-up", "ru": "лёгкое нарастание" },
+    { "en": "steady background flow", "ru": "ровный фоновый поток" }
+  ],
+  "negative_tags": [
+    { "en": "no vocals", "ru": "без вокала" },
+    { "en": "no lyrics", "ru": "без текста" },
+    { "en": "no modern drums", "ru": "без современных барабанов" },
+    { "en": "no trap beat", "ru": "без trap-бита" },
+    { "en": "no EDM drop", "ru": "без EDM-дропа" },
+    { "en": "no aggressive percussion", "ru": "без агрессивной перкуссии" },
+    { "en": "no pop melody", "ru": "без поп-мелодии" },
+    { "en": "no loud lead synth", "ru": "без громкого лид-синта" }
+  ],
+  "ready_prompt_templates": [
+    {
+      "name": "Fantasy village background",
+      "ru": "Фэнтези деревня",
+      "prompt": "loopable fantasy game music, peaceful medieval village, soft lute, wooden flute, subtle percussion, calm and warm atmosphere, non-intrusive background music"
+    },
+    {
+      "name": "Dark dungeon ambient",
+      "ru": "Тёмное подземелье",
+      "prompt": "dark dungeon ambient, deep drone, distant echo, low strings, subtle tension, cold stone hall ambience, slow evolving layers, no vocals"
+    },
+    {
+      "name": "Ancient forest ambient",
+      "ru": "Древний лес",
+      "prompt": "fantasy forest ambient, ancient forest, distant flute, soft choir pads, subtle wind ambience, mysterious and ethereal mood, loopable structure"
+    },
+    {
+      "name": "Border town of Argos",
+      "ru": "Пограничный город Аргоса",
+      "prompt": "fantasy game background music, lonely border town, medieval ambient, distant flute, low strings, subtle percussion, cold and disciplined atmosphere, non-intrusive"
+    },
+    {
+      "name": "Sacred temple",
+      "ru": "Священный храм",
+      "prompt": "sacred temple ambient, ethereal choir, temple bells, long reverb, ancient stone hall ambience, mystical and peaceful atmosphere, slow tempo"
+    },
+    {
+      "name": "War camp background",
+      "ru": "Военный лагерь",
+      "prompt": "fantasy war camp background music, low drums, distant horns, dark strings, quiet tension, disciplined military mood, subtle danger, loopable"
+    },
+    {
+      "name": "Old tavern background",
+      "ru": "Старая таверна",
+      "prompt": "medieval tavern background music, lute, soft fiddle, warm room ambience, quiet crowd feeling, calm pacing, loopable fantasy game music"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+[
+	{
+		"name": "Пугающая скрипка",
+		"prompt": "Haunting violins, sharp string stabs, tense tremolo, dissonant harmonies, psychological horror atmosphere, cold cinematic mood",
+		"created_at": "2026-05-28 12:00:00",
+		"description": "Dark strings / horror"
+	},
+	{
+		"name": "Очень мрачная виолончель",
+		"prompt": "Deep dark cello, slow legato movement, funeral atmosphere, emotional despair, distant reverb, cold empty space",
+		"created_at": "2026-05-28 12:01:00",
+		"description": "Dark cello"
+	},
+	{
+		"name": "Резкие хоррор-струнные",
+		"prompt": "Aggressive orchestral strings, violent bowing, screeching violins, chaotic tension build-up, terrifying horror soundtrack",
+		"created_at": "2026-05-28 12:02:00",
+		"description": "Aggressive horror strings"
+	},
+	{
+		"name": "Мрачный мульт/комикс 60-х",
+		"prompt": "Dark vintage cartoon strings, eerie violins, tense cello pulses, old noir horror atmosphere, analog film texture",
+		"created_at": "2026-05-28 12:03:00",
+		"description": "Cartoon noir"
+	},
+	{
+		"name": "Психологическое безумие",
+		"prompt": "Disturbing dissonant strings, creeping violin glissando, abstract orchestral tension, paranoid atmosphere, unsettling cinematic sound",
+		"created_at": "2026-05-28 12:04:00",
+		"description": "Psychological tension"
+	},
+	{
+		"name": "Тихий ужас",
+		"prompt": "Minimalistic dark strings, distant cello drones, slow violin tremolo, empty cold atmosphere, subtle psychological tension",
+		"created_at": "2026-05-28 12:05:00",
+		"description": "Subtle horror"
+	},
+	{
+		"name": "Берсерк / тёмное фэнтези",
+		"prompt": "Dark fantasy orchestral strings, melancholic cello, aggressive violin swells, ancient tragic atmosphere, emotional devastation",
+		"created_at": "2026-05-28 12:06:00",
+		"description": "Berserk style"
+	}
+]
