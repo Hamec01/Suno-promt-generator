@@ -1,13 +1,13 @@
 THEMES = {
     "dark_noir": {
-        "bg": "#0a0c10",
-        "panel": "#12161c",
-        "panel_soft": "#181d24",
-        "text": "#f0f3f7",
-        "muted": "#9ea8b7",
-        "accent": "#8fb7ff",
-        "accent_soft": "#22324d",
-        "border": "#2a313b",
+        "bg": "#071018",
+        "panel": "#0d1a24",
+        "panel_soft": "#101d29",
+        "text": "#f1f5f9",
+        "muted": "#8fa3b5",
+        "accent": "#2f8cff",
+        "accent_soft": "#153252",
+        "border": "#23435c",
     },
     "blood_ritual": {
         "bg": "#0d090a",
@@ -69,7 +69,8 @@ def get_stylesheet(theme: str = "dark_noir") -> str:
         background-color: {p['panel_soft']};
         border: 1px solid {p['border']};
         border-radius: 10px;
-        padding: 8px 12px;
+        min-height: 36px;
+        padding: 7px 12px;
         color: {p['text']};
         font-weight: 600;
     }}
@@ -84,8 +85,8 @@ def get_stylesheet(theme: str = "dark_noir") -> str:
     }}
 
     QFrame[card="true"] {{
-        min-width: 290px;
-        min-height: 112px;
+        min-width: 200px;
+        min-height: 90px;
         background-color: {p['panel']};
         border: 1px solid {p['border']};
         border-radius: 14px;
@@ -102,9 +103,29 @@ def get_stylesheet(theme: str = "dark_noir") -> str:
         color: {p['text']};
     }}
 
+    QLabel#TokenPrimary {{
+        color: {p['text']};
+        font-size: 14px;
+        font-weight: 700;
+    }}
+
     QLabel[cardSecondary="true"] {{
         font-size: 11px;
         color: {p['muted']};
+    }}
+
+    QLabel#TokenSecondary {{
+        color: {p['muted']};
+        font-size: 11px;
+    }}
+
+    QPushButton#CardIconButton {{
+        min-width: 24px;
+        max-width: 24px;
+        min-height: 24px;
+        max-height: 24px;
+        padding: 0;
+        border-radius: 8px;
     }}
 
     QComboBox, QLineEdit, QTextEdit {{
@@ -131,9 +152,13 @@ def get_stylesheet(theme: str = "dark_noir") -> str:
         color: {p['muted']};
         border: 1px solid {p['border']};
         border-radius: 12px;
-        padding: 10px 14px;
-        margin-right: 6px;
-        min-width: 120px;
+        padding: 8px 12px;
+        margin-right: 8px;
+        min-width: 140px;
+        max-width: 160px;
+        min-height: 58px;
+        font-size: 13px;
+        font-weight: 600;
     }}
 
     QTabBar::tab:selected {{

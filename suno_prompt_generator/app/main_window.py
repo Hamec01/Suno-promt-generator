@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 from PySide6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QTimer
+from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QApplication,
@@ -25,6 +26,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QCheckBox,
+    QMenu,
     QScrollArea,
     QSplitter,
     QSizePolicy,
@@ -58,6 +60,7 @@ from .styles import get_stylesheet
 
 
 TAB_ICONS = {
+    "all": "◉",
     "genres": "🎼",
     "quality": "🎚️",
     "instruments": "🎻",
@@ -74,9 +77,30 @@ TAB_ICONS = {
 }
 
 CARD_SIZES = {
-    "small": {"width": 160, "height": 70},
-    "medium": {"width": 220, "height": 95},
-    "large": {"width": 280, "height": 120},
+    "compact": {
+        "width": 200,
+        "height": 90,
+        "show_secondary": False,
+        "show_weight_controls": False,
+    },
+    "small": {
+        "width": 220,
+        "height": 118,
+        "show_secondary": True,
+        "show_weight_controls": True,
+    },
+    "medium": {
+        "width": 270,
+        "height": 138,
+        "show_secondary": True,
+        "show_weight_controls": True,
+    },
+    "large": {
+        "width": 330,
+        "height": 165,
+        "show_secondary": True,
+        "show_weight_controls": True,
+    },
 }
 
 QUALITY_GROUP_LABELS = {
@@ -482,56 +506,106 @@ class TokenCard(QFrame):
         self.weight = 1.0
         self.active = False
         self.card_size = card_size if card_size in CARD_SIZES else "medium"
+        self.card_spec = CARD_SIZES[self.card_size]
         self.setProperty("card", "true")
         self.setProperty("active", "false")
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(6)
+        layout.setContentsMargins(14, 12, 14, 12)
+        layout.setSpacing(7)
 
         header = QHBoxLayout()
+        header.setSpacing(6)
+        header.setContentsMargins(0, 0, 0, 0)
         self.icon_label = QLabel(self.token.get("icon", "♪"))
+        self.icon_label.setFixedSize(22, 22)
         self.icon_label.setStyleSheet("font-size: 20px;")
         self.favorite_button = QPushButton("☆")
-        self.favorite_button.setFixedWidth(34)
+        self.favorite_button.setObjectName("CardIconButton")
+        self.favorite_button.setFixedSize(24, 24)
+        self.favorite_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.favorite_button.clicked.connect(self._favorite)
+        self.menu_button = QPushButton("⋯")
+        self.menu_button.setObjectName("CardIconButton")
+        self.menu_button.setFixedSize(24, 24)
+        self.menu_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.menu_button.setToolTip("More")
+        header_widget = QWidget()
+        header_widget.setLayout(header)
+        header_widget.setFixedHeight(24)
 
         header.addWidget(self.icon_label)
         header.addStretch()
-        layout.addLayout(header)
+        header.addWidget(self.favorite_button)
+        header.addWidget(self.menu_button)
+        layout.addWidget(header_widget)
 
         self.primary_label = QLabel("")
+        self.primary_label.setObjectName("TokenPrimary")
+        self.primary_label.setMinimumHeight(20)
+        self.primary_label.setMaximumHeight(42)
+        self.primary_label.setWordWrap(True)
+        self.primary_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         self.primary_label.setProperty("cardPrimary", "true")
         self.secondary_label = QLabel("")
+        self.secondary_label.setObjectName("TokenSecondary")
+        self.secondary_label.setMinimumHeight(16)
+        self.secondary_label.setMaximumHeight(32)
+        self.secondary_label.setWordWrap(False)
+        self.secondary_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.secondary_label.setProperty("cardSecondary", "true")
-        self.secondary_label.setWordWrap(True)
 
         layout.addWidget(self.primary_label)
         layout.addWidget(self.secondary_label)
+        layout.addStretch()
 
         controls = QHBoxLayout()
-        controls.setContentsMargins(4, 0, 4, 0)
+        controls.setContentsMargins(0, 0, 0, 0)
+        controls.setSpacing(6)
+        controls_widget = QWidget()
+        controls_widget.setLayout(controls)
+        controls_widget.setFixedHeight(34)
+
+        self.token_hint = QLabel("⟡")
+        self.token_hint.setObjectName("mutedLabel")
+        self.token_hint.setFixedSize(30, 30)
+        self.token_hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.token_hint.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         self.minus_button = QPushButton("-")
-        self.minus_button.setFixedWidth(30)
+        self.minus_button.setFixedSize(30, 30)
+        self.minus_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.minus_button.clicked.connect(self._dec)
 
         self.weight_label = QLabel("100%")
         self.weight_label.setObjectName("mutedLabel")
+        self.weight_label.setFixedSize(46, 30)
+        self.weight_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.weight_label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         self.plus_button = QPushButton("+")
-        self.plus_button.setFixedWidth(30)
+        self.plus_button.setFixedSize(30, 30)
+        self.plus_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.plus_button.clicked.connect(self._inc)
 
-        controls.addWidget(self.favorite_button)
+        controls.addWidget(self.token_hint)
         controls.addStretch()
         controls.addWidget(self.minus_button)
         controls.addWidget(self.weight_label)
         controls.addWidget(self.plus_button)
-        layout.addLayout(controls)
+        layout.addWidget(controls_widget)
 
-        size = CARD_SIZES[self.card_size]
-        self.setMinimumSize(size["width"], size["height"])
+        card_width = int(self.card_spec["width"])
+        card_height = int(self.card_spec["height"])
+        self.setFixedSize(card_width, card_height)
+
+        if not bool(self.card_spec.get("show_secondary", True)):
+            self.secondary_label.setVisible(False)
+
+        if not bool(self.card_spec.get("show_weight_controls", True)):
+            controls_widget.setVisible(False)
+
         self.setToolTip(self._tooltip_text())
 
     def _tooltip_text(self) -> str:
@@ -548,8 +622,11 @@ class TokenCard(QFrame):
 
     def set_display_text(self, primary: str, secondary: str) -> None:
         self.primary_label.setText(primary)
-        self.secondary_label.setText(secondary)
-        self.secondary_label.setVisible(bool(secondary))
+        if self.secondary_label.isVisible():
+            available_width = max(80, int(self.card_spec["width"]) - 32)
+            elided = self.fontMetrics().elidedText(secondary, Qt.TextElideMode.ElideRight, available_width)
+            self.secondary_label.setText(elided)
+            self.secondary_label.setVisible(bool(secondary))
 
     def set_active(self, value: bool) -> None:
         self.active = value
@@ -598,11 +675,13 @@ class MainWindow(QMainWindow):
         self.structured_mode_enabled = bool(self.settings.get("structured_mode_enabled", False))
         self.favorites = set(self.storage.load_favorites())
         self.recent_token_ids = [str(item) for item in self.settings.get("recent_token_ids", []) if str(item).strip()]
-        self.sidebar_collapsed = bool(self.settings.get("ui_layout", {}).get("sidebar_collapsed", False))
+        ui_layout = self.settings.get("ui_layout", {}) if isinstance(self.settings.get("ui_layout", {}), dict) else {}
+        self.sidebar_collapsed = bool(ui_layout.get("left_sidebar_collapsed", ui_layout.get("sidebar_collapsed", False)))
         self.prompt_collapsed = bool(self.settings.get("ui_layout", {}).get("prompt_collapsed", False))
         self.smart_collapsed = bool(self.settings.get("ui_layout", {}).get("smart_collapsed", False))
         self.warnings_collapsed = bool(self.settings.get("ui_layout", {}).get("warnings_collapsed", False))
         self.saved_collapsed = bool(self.settings.get("ui_layout", {}).get("saved_collapsed", False))
+        self.right_toolbar_visible = bool(ui_layout.get("right_toolbar_visible", True))
 
         self.track_type_category = self._detect_track_type_category()
         self.selected_tokens: Dict[str, Dict[str, Any]] = {}
@@ -615,17 +694,18 @@ class MainWindow(QMainWindow):
         self._search_debounce_timer.setSingleShot(True)
         self._search_debounce_timer.timeout.connect(self._apply_search_update)
         self.tab_keys = [
-            "genres",
-            "quality",
-            "instruments",
-            "vocals",
+            "all",
             "mood",
+            "instruments",
             "texture",
+            "genres",
             "fantasy",
-            "horror",
-            "hiphop",
             "ambient",
+            "horror",
             "game_bgm",
+            "vocals",
+            "quality",
+            "hiphop",
             "favorites",
             "saved",
         ]
@@ -645,16 +725,16 @@ class MainWindow(QMainWindow):
     def _build_ui(self) -> None:
         root = QWidget()
         root_layout = QVBoxLayout(root)
-        root_layout.setSpacing(10)
+        root_layout.setSpacing(8)
 
-        header = QFrame()
-        header.setObjectName("panel")
-        header_layout = QHBoxLayout(header)
+        top_app_bar = QFrame()
+        top_app_bar.setObjectName("panel")
+        top_layout = QHBoxLayout(top_app_bar)
 
         self.logo_label = QLabel("♪")
-        self.logo_label.setStyleSheet("font-size: 28px; font-weight: 700;")
+        self.logo_label.setStyleSheet("font-size: 24px; font-weight: 700;")
         self.title_label = QLabel("Suno Prompt Generator")
-        self.title_label.setStyleSheet("font-size: 20px; font-weight: 700;")
+        self.title_label.setStyleSheet("font-size: 19px; font-weight: 700;")
 
         self.ru_button = QPushButton("RU")
         self.en_button = QPushButton("EN")
@@ -663,28 +743,32 @@ class MainWindow(QMainWindow):
 
         self.display_mode_combo = QComboBox()
         self.display_mode_combo.currentIndexChanged.connect(self._on_display_mode_changed)
-
         self.theme_combo = QComboBox()
         self.theme_combo.currentIndexChanged.connect(self._on_theme_changed)
-
         self.card_size_label = QLabel("Card Size")
         self.card_size_combo = QComboBox()
         self.card_size_combo.currentIndexChanged.connect(self._on_card_size_changed)
 
-        header_layout.addWidget(self.logo_label)
-        header_layout.addWidget(self.title_label)
-        header_layout.addStretch()
-        header_layout.addWidget(self.ru_button)
-        header_layout.addWidget(self.en_button)
-        header_layout.addWidget(self.display_mode_combo)
-        header_layout.addWidget(self.theme_combo)
-        header_layout.addWidget(self.card_size_label)
-        header_layout.addWidget(self.card_size_combo)
-        root_layout.addWidget(header)
+        self.help_btn = QPushButton("?")
+        self.help_btn.setToolTip("About")
+        self.help_btn.setFixedWidth(32)
+        self.help_btn.clicked.connect(lambda: QMessageBox.information(self, "About", "Suno Prompt Generator"))
 
-        controls = QFrame()
-        controls.setObjectName("panel")
-        controls_layout = QGridLayout(controls)
+        top_layout.addWidget(self.logo_label)
+        top_layout.addWidget(self.title_label)
+        top_layout.addStretch()
+        top_layout.addWidget(self.ru_button)
+        top_layout.addWidget(self.en_button)
+        top_layout.addWidget(self.display_mode_combo)
+        top_layout.addWidget(self.theme_combo)
+        top_layout.addWidget(self.card_size_label)
+        top_layout.addWidget(self.card_size_combo)
+        top_layout.addWidget(self.help_btn)
+        root_layout.addWidget(top_app_bar)
+
+        command_bar = QFrame()
+        command_bar.setObjectName("panel")
+        command_layout = QHBoxLayout(command_bar)
 
         self.track_type_combo = QComboBox()
         self.track_type_combo.currentIndexChanged.connect(self.update_prompt_preview)
@@ -721,11 +805,13 @@ class MainWindow(QMainWindow):
 
         self.collection_combo = QComboBox()
         self.collection_combo.addItems(list(COLLECTIONS.keys()))
-        self.collection_apply_btn = QPushButton("Apply")
+        self.collection_apply_btn = QPushButton("✓")
+        self.collection_apply_btn.setToolTip("Apply Collection")
         self.collection_apply_btn.clicked.connect(self.apply_collection)
 
         self.quality_preset_combo = QComboBox()
-        self.quality_apply_btn = QPushButton("Apply")
+        self.quality_apply_btn = QPushButton("✓")
+        self.quality_apply_btn.setToolTip("Apply Quality Preset")
         self.quality_apply_btn.clicked.connect(self.apply_quality_preset)
 
         self.filter_selected_only = QCheckBox("Selected only")
@@ -754,6 +840,9 @@ class MainWindow(QMainWindow):
         self.smart_bgm_btn.clicked.connect(self.smart_bgm_generate)
         self.undo_smart_btn = QPushButton("Undo Smart")
         self.undo_smart_btn.clicked.connect(self.undo_smart)
+        self.apply_btn = QPushButton("✓ Apply")
+        self.apply_btn.setProperty("variant", "accent")
+        self.apply_btn.clicked.connect(lambda: self.update_prompt_preview(animated=True))
 
         self.game_bgm_preset_combo = QComboBox()
         self.game_bgm_preset_combo.addItems(GAME_BGM_QUICK_PRESETS)
@@ -786,67 +875,115 @@ class MainWindow(QMainWindow):
         self.clear_btn = QPushButton("Clear")
         self.clear_btn.clicked.connect(self.clear_selection)
 
-        controls_layout.addWidget(self.track_type_label, 0, 0)
-        controls_layout.addWidget(self.track_type_combo, 0, 1)
-        controls_layout.addWidget(self.preset_label, 0, 2)
-        controls_layout.addWidget(self.preset_combo, 0, 3)
-        controls_layout.addWidget(self.search_input, 0, 4, 1, 3)
-        controls_layout.addWidget(self.instrument_group_filter_label, 0, 7)
-        controls_layout.addWidget(self.instrument_group_filter_combo, 0, 8)
-        controls_layout.addWidget(self.genre_group_filter_label, 0, 9)
-        controls_layout.addWidget(self.genre_group_filter_combo, 0, 10)
-        controls_layout.addWidget(self.quality_group_filter_label, 0, 11)
-        controls_layout.addWidget(self.quality_group_filter_combo, 0, 12)
+        self.quick_import_btn = QPushButton("⬆")
+        self.quick_import_btn.setToolTip("Import JSON")
+        self.quick_import_btn.clicked.connect(self.import_json)
+        self.quick_export_btn = QPushButton("⬇")
+        self.quick_export_btn.setToolTip("Export Full Database")
+        self.quick_export_btn.clicked.connect(self.export_all_data)
 
-        controls_layout.addWidget(self.collections_label, 1, 0)
-        controls_layout.addWidget(self.collection_combo, 1, 1)
-        controls_layout.addWidget(self.collection_apply_btn, 1, 2)
-        controls_layout.addWidget(self.quality_preset_combo, 1, 3)
-        controls_layout.addWidget(self.quality_apply_btn, 1, 4)
-        controls_layout.addWidget(self.generator_mode_label, 1, 5)
-        controls_layout.addWidget(self.generator_mode_combo, 1, 6)
-        controls_layout.addWidget(self.auto_bgm_rules_btn, 1, 7)
-        controls_layout.addWidget(self.structured_mode_btn, 1, 8)
-        controls_layout.addWidget(self.game_bgm_preset_combo, 1, 9)
-        controls_layout.addWidget(self.game_bgm_apply_btn, 1, 10)
-        controls_layout.addWidget(self.filter_selected_only, 1, 13)
-        controls_layout.addWidget(self.filter_favorites_only, 1, 14)
-        controls_layout.addWidget(self.filter_recent_only, 1, 15)
+        self.options_btn = QPushButton("⚙ Options")
+        self._create_options_menu()
 
-        controls_layout.addWidget(self.import_btn, 2, 0)
-        controls_layout.addWidget(self.import_pack_btn, 2, 1)
-        controls_layout.addWidget(self.export_all_btn, 2, 2)
-        controls_layout.addWidget(self.export_tokens_btn, 2, 3)
-        controls_layout.addWidget(self.export_presets_btn, 2, 4)
-        controls_layout.addWidget(self.export_prompts_btn, 2, 5)
+        for btn in [
+            self.smart_generate_btn,
+            self.smart_bgm_btn,
+            self.undo_smart_btn,
+            self.random_btn,
+            self.clear_btn,
+            self.apply_btn,
+            self.options_btn,
+            self.quick_import_btn,
+            self.quick_export_btn,
+        ]:
+            btn.setMinimumHeight(46)
 
-        controls_layout.addWidget(self.add_word_btn, 3, 0)
-        controls_layout.addWidget(self.add_prompt_btn, 3, 1)
-        controls_layout.addWidget(self.save_current_btn, 3, 2)
-        controls_layout.addWidget(self.save_preset_btn, 3, 3)
-        controls_layout.addWidget(self.smart_generate_btn, 3, 4)
-        controls_layout.addWidget(self.smart_bgm_btn, 3, 5)
-        controls_layout.addWidget(self.undo_smart_btn, 3, 6)
-        controls_layout.addWidget(self.random_btn, 3, 7)
-        controls_layout.addWidget(self.clear_btn, 3, 8)
+        command_layout.addWidget(self.smart_generate_btn)
+        command_layout.addWidget(self.smart_bgm_btn)
+        command_layout.addWidget(self.undo_smart_btn)
+        command_layout.addWidget(self.random_btn)
+        command_layout.addWidget(self.clear_btn)
+        command_layout.addWidget(self.apply_btn)
+        command_layout.addStretch()
+        command_layout.addWidget(self.options_btn)
+        command_layout.addWidget(self.quick_import_btn)
+        command_layout.addWidget(self.quick_export_btn)
+        root_layout.addWidget(command_bar)
 
-        root_layout.addWidget(controls)
-        root_layout.addWidget(self.search_summary_label)
-        root_layout.addWidget(self.quality_hint_label)
-
-        self.tab_bar = QTabBar()
-        self.tab_bar.currentChanged.connect(self._on_tab_changed)
-
-        self.sidebar_frame = QFrame()
-        self.sidebar_frame.setObjectName("panel")
-        self.sidebar_frame.setMinimumWidth(180)
-        sidebar_layout = QVBoxLayout(self.sidebar_frame)
-        self.sidebar_toggle_btn = QPushButton("− Categories")
+        self.left_sidebar = QFrame()
+        self.left_sidebar.setObjectName("panel")
+        self.left_sidebar.setMinimumWidth(180)
+        self.left_sidebar.setMaximumWidth(320)
+        left_layout = QVBoxLayout(self.left_sidebar)
+        self.sidebar_toggle_btn = QPushButton("− Filters")
         self.sidebar_toggle_btn.setCheckable(True)
         self.sidebar_toggle_btn.setChecked(not self.sidebar_collapsed)
         self.sidebar_toggle_btn.clicked.connect(self._toggle_sidebar)
-        sidebar_layout.addWidget(self.sidebar_toggle_btn)
-        sidebar_layout.addWidget(self.tab_bar)
+        left_layout.addWidget(self.sidebar_toggle_btn)
+
+        self.collection_section_label = QLabel("Collections")
+        self.collection_section_label.setStyleSheet("font-size: 14px; font-weight: 700;")
+        left_layout.addWidget(self.collection_section_label)
+
+        self.collection_all_btn = QPushButton("Все токены    0")
+        self.collection_all_btn.clicked.connect(lambda: self.tab_bar.setCurrentIndex(self.tab_keys.index("all")))
+        self.collection_favorites_btn = QPushButton("Избранные    0")
+        self.collection_favorites_btn.clicked.connect(lambda: self.tab_bar.setCurrentIndex(self.tab_keys.index("favorites")))
+        self.collection_saved_btn = QPushButton("Мои наборы   0")
+        self.collection_saved_btn.clicked.connect(lambda: self.tab_bar.setCurrentIndex(self.tab_keys.index("saved")))
+        left_layout.addWidget(self.collection_all_btn)
+        left_layout.addWidget(self.collection_favorites_btn)
+        left_layout.addWidget(self.collection_saved_btn)
+
+        self.filters_label = QLabel("Фильтры")
+        self.filters_label.setStyleSheet("font-size: 14px; font-weight: 700;")
+        left_layout.addWidget(self.filters_label)
+
+        left_layout.addWidget(self.track_type_label)
+        left_layout.addWidget(self.track_type_combo)
+        left_layout.addWidget(self.collections_label)
+        left_layout.addWidget(self.collection_combo)
+        left_layout.addWidget(self.preset_label)
+        left_layout.addWidget(self.preset_combo)
+        left_layout.addWidget(self.generator_mode_label)
+        left_layout.addWidget(self.generator_mode_combo)
+
+        self.bgm_label = QLabel("Фоновая музыка")
+        left_layout.addWidget(self.bgm_label)
+        left_layout.addWidget(self.auto_bgm_rules_btn)
+        self.structure_label = QLabel("Структура")
+        left_layout.addWidget(self.structure_label)
+        left_layout.addWidget(self.structured_mode_btn)
+        self.style_label = QLabel("Стиль")
+        left_layout.addWidget(self.style_label)
+        left_layout.addWidget(self.quality_preset_combo)
+        left_layout.addWidget(self.quality_apply_btn)
+
+        left_layout.addWidget(self.instrument_group_filter_label)
+        left_layout.addWidget(self.instrument_group_filter_combo)
+        left_layout.addWidget(self.genre_group_filter_label)
+        left_layout.addWidget(self.genre_group_filter_combo)
+        left_layout.addWidget(self.quality_group_filter_label)
+        left_layout.addWidget(self.quality_group_filter_combo)
+        left_layout.addWidget(self.filter_favorites_only)
+        left_layout.addWidget(self.filter_recent_only)
+        left_layout.addWidget(self.filter_selected_only)
+        left_layout.addWidget(self.search_input)
+
+        left_layout.addStretch()
+
+        self.main_workspace = QFrame()
+        self.main_workspace.setObjectName("panel")
+        self.main_workspace.setMinimumWidth(700)
+        main_workspace_layout = QVBoxLayout(self.main_workspace)
+
+        self.tab_bar = QTabBar()
+        self.tab_bar.currentChanged.connect(self._on_tab_changed)
+        self.tab_bar.setFixedHeight(74)
+        self.tab_bar.setExpanding(False)
+        self.tab_bar.setUsesScrollButtons(True)
+        self.tab_bar.setElideMode(Qt.TextElideMode.ElideRight)
+        main_workspace_layout.addWidget(self.tab_bar)
 
         self.stack = QStackedWidget()
         self.stack.setMinimumWidth(500)
@@ -856,8 +993,12 @@ class MainWindow(QMainWindow):
         browser_layout = QVBoxLayout(self.browser_panel)
         self.cards_scroll = QScrollArea()
         self.cards_scroll.setWidgetResizable(True)
+        self.cards_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.cards_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.cards_scroll.setMinimumHeight(380)
         self.cards_container = QWidget()
-        self.cards_layout = FlowLayout(self.cards_container, margin=8, hspacing=12, vspacing=12)
+        self.cards_container.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.cards_layout = FlowLayout(self.cards_container, margin=14, hspacing=16, vspacing=16)
         self.cards_scroll.setWidget(self.cards_container)
         browser_layout.addWidget(self.cards_scroll)
         self.stack.addWidget(self.browser_panel)
@@ -884,6 +1025,8 @@ class MainWindow(QMainWindow):
         self.game_bgm_apply_prompt_btn = QPushButton("Apply selected preset")
         self.game_bgm_apply_prompt_btn.clicked.connect(self.apply_game_bgm_selected_preset)
         game_bgm_layout.addWidget(self.game_bgm_apply_prompt_btn)
+        game_bgm_layout.addWidget(self.game_bgm_preset_combo)
+        game_bgm_layout.addWidget(self.game_bgm_apply_btn)
 
         self.stack.addWidget(self.game_bgm_panel)
 
@@ -904,10 +1047,38 @@ class MainWindow(QMainWindow):
         saved_layout.addWidget(self.saved_table)
         self.stack.addWidget(self.saved_panel)
 
-        self.top_content_splitter = QSplitter(Qt.Orientation.Horizontal)
-        self.top_content_splitter.addWidget(self.sidebar_frame)
-        self.top_content_splitter.addWidget(self.stack)
-        self.top_content_splitter.setChildrenCollapsible(False)
+        main_workspace_layout.addWidget(self.stack)
+
+        self.right_toolbar = QFrame()
+        self.right_toolbar.setObjectName("panel")
+        self.right_toolbar.setMinimumWidth(48)
+        self.right_toolbar.setMaximumWidth(56)
+        right_toolbar_layout = QVBoxLayout(self.right_toolbar)
+        self.right_toolbar_toggle_btn = QPushButton("−")
+        self.right_toolbar_toggle_btn.setCheckable(True)
+        self.right_toolbar_toggle_btn.setChecked(self.right_toolbar_visible)
+        self.right_toolbar_toggle_btn.clicked.connect(self._toggle_right_toolbar)
+        right_toolbar_layout.addWidget(self.right_toolbar_toggle_btn)
+        for icon, tip in [("⌕", "Search"), ("⚙", "Smart Rules"), ("☆", "Favorites"), ("▦", "Collections"), ("◈", "Quality"), ("🧪", "Testing"), ("🗄", "Database"), ("⚙", "Settings")]:
+            btn = QPushButton(icon)
+            btn.setToolTip(tip)
+            right_toolbar_layout.addWidget(btn)
+        right_toolbar_layout.addStretch()
+
+        workspace_with_toolbar = QWidget()
+        workspace_row = QHBoxLayout(workspace_with_toolbar)
+        workspace_row.setContentsMargins(0, 0, 0, 0)
+        workspace_row.setSpacing(8)
+        workspace_row.addWidget(self.main_workspace, 1)
+        workspace_row.addWidget(self.right_toolbar)
+
+        self.content_horizontal_splitter = QSplitter(Qt.Orientation.Horizontal)
+        self.content_horizontal_splitter.addWidget(self.left_sidebar)
+        self.content_horizontal_splitter.addWidget(workspace_with_toolbar)
+        self.content_horizontal_splitter.setChildrenCollapsible(False)
+
+        root_layout.addWidget(self.search_summary_label)
+        root_layout.addWidget(self.quality_hint_label)
 
         preview = QFrame()
         preview.setObjectName("panel")
@@ -984,15 +1155,22 @@ class MainWindow(QMainWindow):
         preview_layout.addWidget(self.suggestions_label)
 
         actions = QHBoxLayout()
-        self.copy_btn = QPushButton("Copy")
-        self.copy120_btn = QPushButton("Copy 120")
-        self.favorite_prompt_btn = QPushButton("Favorite")
+        self.copy_btn = QPushButton("📋")
+        self.copy_btn.setToolTip("Copy full prompt")
+        self.copy120_btn = QPushButton("120")
+        self.copy120_btn.setToolTip("Copy short prompt")
+        self.clear_prompt_btn = QPushButton("🗑")
+        self.clear_prompt_btn.setToolTip("Clear prompt")
+        self.clear_prompt_btn.clicked.connect(self._clear_prompt_fields)
+        self.favorite_prompt_btn = QPushButton("☆")
+        self.favorite_prompt_btn.setToolTip("Save current prompt")
         self.favorite_prompt_btn.setProperty("variant", "accent")
         self.copy_btn.clicked.connect(lambda: self._copy_text(self.full_prompt_edit.toPlainText()))
         self.copy120_btn.clicked.connect(lambda: self._copy_text(self.short_prompt_edit.toPlainText()))
         self.favorite_prompt_btn.clicked.connect(self.save_current_prompt)
         actions.addWidget(self.copy_btn)
         actions.addWidget(self.copy120_btn)
+        actions.addWidget(self.clear_prompt_btn)
         actions.addWidget(self.favorite_prompt_btn)
         actions.addStretch()
         preview_layout.addLayout(actions)
@@ -1000,11 +1178,15 @@ class MainWindow(QMainWindow):
         self.smart_panel = QFrame()
         self.smart_panel.setObjectName("panel")
         smart_layout = QVBoxLayout(self.smart_panel)
-        self.smart_toggle_btn = QPushButton("− Smart Additions")
+        self.smart_toggle_btn = QPushButton("− ✨ Smart Additions")
         self.smart_toggle_btn.setCheckable(True)
         self.smart_toggle_btn.setChecked(not self.smart_collapsed)
         self.smart_toggle_btn.clicked.connect(self._toggle_smart_panel)
         smart_layout.addWidget(self.smart_toggle_btn)
+        self.smart_apply_btn = QPushButton("+")
+        self.smart_apply_btn.setToolTip("Apply smart suggestions")
+        self.smart_apply_btn.clicked.connect(self.smart_generate)
+        smart_layout.addWidget(self.smart_apply_btn)
         self.smart_additions_edit = QTextEdit()
         self.smart_additions_edit.setReadOnly(True)
         self.smart_additions_edit.setMinimumHeight(90)
@@ -1013,29 +1195,40 @@ class MainWindow(QMainWindow):
         self.warnings_panel = QFrame()
         self.warnings_panel.setObjectName("panel")
         warnings_layout = QVBoxLayout(self.warnings_panel)
-        self.warnings_toggle_btn = QPushButton("− Warnings")
+        self.warnings_toggle_btn = QPushButton("− ⚠ Warnings")
         self.warnings_toggle_btn.setCheckable(True)
         self.warnings_toggle_btn.setChecked(not self.warnings_collapsed)
         self.warnings_toggle_btn.clicked.connect(self._toggle_warnings_panel)
         warnings_layout.addWidget(self.warnings_toggle_btn)
+        self.warning_close_btn = QPushButton("×")
+        self.warning_close_btn.setToolTip("Clear warnings")
+        warnings_layout.addWidget(self.warning_close_btn)
         self.warning_details_edit = QTextEdit()
         self.warning_details_edit.setReadOnly(True)
         self.warning_details_edit.setMinimumHeight(90)
+        self.warning_close_btn.clicked.connect(self.warning_details_edit.clear)
         warnings_layout.addWidget(self.warning_details_edit)
 
-        self.prompt_area_splitter = QSplitter(Qt.Orientation.Vertical)
-        self.prompt_area_splitter.addWidget(self.smart_panel)
-        self.prompt_area_splitter.addWidget(self.warnings_panel)
-        self.prompt_area_splitter.setChildrenCollapsible(False)
+        self.right_bottom_splitter = QSplitter(Qt.Orientation.Vertical)
+        self.right_bottom_splitter.addWidget(self.smart_panel)
+        self.right_bottom_splitter.addWidget(self.warnings_panel)
+        self.right_bottom_splitter.setChildrenCollapsible(False)
 
-        self.bottom_prompt_splitter = QSplitter(Qt.Orientation.Horizontal)
-        self.bottom_prompt_splitter.addWidget(preview)
-        self.bottom_prompt_splitter.addWidget(self.prompt_area_splitter)
-        self.bottom_prompt_splitter.setChildrenCollapsible(False)
+        self.bottom_splitter = QSplitter(Qt.Orientation.Horizontal)
+        self.bottom_splitter.addWidget(preview)
+        self.bottom_splitter.addWidget(self.right_bottom_splitter)
+        self.bottom_splitter.setChildrenCollapsible(False)
+
+        self.bottom_dashboard = QWidget()
+        bottom_layout = QVBoxLayout(self.bottom_dashboard)
+        bottom_layout.setContentsMargins(0, 0, 0, 0)
+        bottom_layout.addWidget(self.bottom_splitter)
+        self.bottom_dashboard.setMinimumHeight(190)
+        self.bottom_dashboard.setMaximumHeight(330)
 
         self.main_vertical_splitter = QSplitter(Qt.Orientation.Vertical)
-        self.main_vertical_splitter.addWidget(self.top_content_splitter)
-        self.main_vertical_splitter.addWidget(self.bottom_prompt_splitter)
+        self.main_vertical_splitter.addWidget(self.content_horizontal_splitter)
+        self.main_vertical_splitter.addWidget(self.bottom_dashboard)
         self.main_vertical_splitter.setChildrenCollapsible(False)
 
         root_layout.addWidget(self.main_vertical_splitter, stretch=1)
@@ -1046,6 +1239,8 @@ class MainWindow(QMainWindow):
         self._toggle_smart_panel(self.smart_toggle_btn.isChecked())
         self._toggle_warnings_panel(self.warnings_toggle_btn.isChecked())
         self._toggle_saved_panel(self.saved_toggle_btn.isChecked())
+        self._toggle_right_toolbar(self.right_toolbar_toggle_btn.isChecked())
+        self._update_collection_counts()
 
         self._build_game_bgm_quick_presets()
         self._reload_quality_preset_combo()
@@ -1066,46 +1261,133 @@ class MainWindow(QMainWindow):
             button.clicked.connect(lambda checked=False, name=preset_name: self.apply_game_bgm_preset_by_name(name))
             self.game_bgm_quick_layout.addWidget(button)
 
+    def _create_options_menu(self) -> None:
+        menu = QMenu(self)
+
+        actions = [
+            ("Import JSON", self.import_json),
+            ("Import JSON Pack", self.import_json_pack),
+            ("Export Full Database", self.export_all_data),
+            ("Export Tokens", self.export_prompt_data),
+            ("Export Presets", self.export_presets),
+            ("Export Prompts", self.export_user_prompts),
+            ("Add Token", self.add_token),
+            ("Add Prompt", self.add_ready_prompt),
+            ("Save Current Prompt", self.save_current_prompt),
+            ("Save Preset", self.save_preset),
+            ("Settings", lambda: QMessageBox.information(self, "Settings", "Use top app bar controls for language, display mode, theme and card size.")),
+            ("About", lambda: QMessageBox.information(self, "About", "Suno Prompt Generator\nDesktop prompt tool.")),
+        ]
+
+        for text, callback in actions:
+            action = QAction(text, self)
+            action.triggered.connect(callback)
+            menu.addAction(action)
+
+        self.options_btn.setMenu(menu)
+
+    def _clear_prompt_fields(self) -> None:
+        self._updating_prompt = True
+        self.full_prompt_edit.clear()
+        self.short_prompt_edit.clear()
+        self._updating_prompt = False
+        self._update_preview_metrics("", "", 0)
+
+    def _update_collection_counts(self) -> None:
+        all_count = len(self._all_tokens())
+        fav_count = len(self.favorites)
+        saved_count = len(self.user_prompts)
+        if self.lang == "ru":
+            self.collection_all_btn.setText(f"Все токены        {all_count}")
+            self.collection_favorites_btn.setText(f"Избранные         {fav_count}")
+            self.collection_saved_btn.setText(f"Мои наборы        {saved_count}")
+        else:
+            self.collection_all_btn.setText(f"All Tokens        {all_count}")
+            self.collection_favorites_btn.setText(f"Favorites         {fav_count}")
+            self.collection_saved_btn.setText(f"My Sets           {saved_count}")
+
     def _restore_splitter_state(self) -> None:
         ui_layout = self.settings.get("ui_layout", {}) if isinstance(self.settings, dict) else {}
         if isinstance(ui_layout, dict):
-            top_sizes = ui_layout.get("top_content_splitter")
+            top_sizes = ui_layout.get("content_horizontal_splitter", ui_layout.get("top_content_splitter"))
             if isinstance(top_sizes, list) and len(top_sizes) == 2:
-                self.top_content_splitter.setSizes([int(top_sizes[0]), int(top_sizes[1])])
+                self.content_horizontal_splitter.setSizes([int(top_sizes[0]), int(top_sizes[1])])
             else:
-                self.top_content_splitter.setSizes([260, 980])
+                self.content_horizontal_splitter.setSizes([240, 1120])
 
             main_sizes = ui_layout.get("main_vertical_splitter")
             if isinstance(main_sizes, list) and len(main_sizes) == 2:
                 self.main_vertical_splitter.setSizes([int(main_sizes[0]), int(main_sizes[1])])
             else:
-                self.main_vertical_splitter.setSizes([620, 240])
+                self.main_vertical_splitter.setSizes([680, 260])
 
-            prompt_sizes = ui_layout.get("prompt_area_splitter")
+            prompt_sizes = ui_layout.get("right_bottom_splitter", ui_layout.get("prompt_area_splitter"))
             if isinstance(prompt_sizes, list) and len(prompt_sizes) == 2:
-                self.prompt_area_splitter.setSizes([int(prompt_sizes[0]), int(prompt_sizes[1])])
+                self.right_bottom_splitter.setSizes([int(prompt_sizes[0]), int(prompt_sizes[1])])
             else:
-                self.prompt_area_splitter.setSizes([160, 120])
+                self.right_bottom_splitter.setSizes([130, 130])
 
-            bottom_sizes = ui_layout.get("bottom_prompt_splitter")
+            bottom_sizes = ui_layout.get("bottom_splitter", ui_layout.get("bottom_prompt_splitter"))
             if isinstance(bottom_sizes, list) and len(bottom_sizes) == 2:
-                self.bottom_prompt_splitter.setSizes([int(bottom_sizes[0]), int(bottom_sizes[1])])
+                self.bottom_splitter.setSizes([int(bottom_sizes[0]), int(bottom_sizes[1])])
             else:
-                self.bottom_prompt_splitter.setSizes([780, 420])
+                self.bottom_splitter.setSizes([820, 540])
 
     def _toggle_sidebar(self, expanded: bool) -> None:
-        self.tab_bar.setVisible(expanded)
+        for widget in [
+            self.collection_section_label,
+            self.collection_all_btn,
+            self.collection_favorites_btn,
+            self.collection_saved_btn,
+            self.filters_label,
+            self.track_type_label,
+            self.track_type_combo,
+            self.collections_label,
+            self.collection_combo,
+            self.preset_label,
+            self.preset_combo,
+            self.generator_mode_label,
+            self.generator_mode_combo,
+            self.bgm_label,
+            self.auto_bgm_rules_btn,
+            self.structure_label,
+            self.structured_mode_btn,
+            self.style_label,
+            self.quality_preset_combo,
+            self.quality_apply_btn,
+            self.instrument_group_filter_label,
+            self.instrument_group_filter_combo,
+            self.genre_group_filter_label,
+            self.genre_group_filter_combo,
+            self.quality_group_filter_label,
+            self.quality_group_filter_combo,
+            self.filter_favorites_only,
+            self.filter_recent_only,
+            self.filter_selected_only,
+            self.search_input,
+        ]:
+            widget.setVisible(expanded)
         if expanded:
-            current_sizes = self.top_content_splitter.sizes()
+            current_sizes = self.content_horizontal_splitter.sizes()
             if current_sizes and current_sizes[0] < 180:
-                self.top_content_splitter.setSizes([260, max(500, current_sizes[1])])
+                self.content_horizontal_splitter.setSizes([240, max(700, current_sizes[1])])
         else:
-            current_sizes = self.top_content_splitter.sizes()
-            self.top_content_splitter.setSizes([48, max(500, current_sizes[1] if len(current_sizes) > 1 else 900)])
+            current_sizes = self.content_horizontal_splitter.sizes()
+            self.content_horizontal_splitter.setSizes([48, max(700, current_sizes[1] if len(current_sizes) > 1 else 900)])
         if self.lang == "en":
-            self.sidebar_toggle_btn.setText("− Categories" if expanded else "+ Categories")
+            self.sidebar_toggle_btn.setText("− Filters" if expanded else "+ Filters")
         else:
-            self.sidebar_toggle_btn.setText("− Категории" if expanded else "+ Категории")
+            self.sidebar_toggle_btn.setText("− Фильтры" if expanded else "+ Фильтры")
+
+    def _toggle_right_toolbar(self, visible: bool) -> None:
+        for idx in range(1, self.right_toolbar.layout().count()):
+            item = self.right_toolbar.layout().itemAt(idx)
+            widget = item.widget() if item else None
+            if widget is not None:
+                widget.setVisible(visible)
+        self.right_toolbar.setMaximumWidth(56 if visible else 24)
+        self.right_toolbar.setMinimumWidth(48 if visible else 24)
+        self.right_toolbar_toggle_btn.setText("−" if visible else "+")
 
     def _toggle_prompt_panel(self, expanded: bool) -> None:
         self.preview_title.setVisible(expanded)
@@ -1119,6 +1401,7 @@ class MainWindow(QMainWindow):
         self.suggestions_label.setVisible(expanded)
         self.copy_btn.setVisible(expanded)
         self.copy120_btn.setVisible(expanded)
+        self.clear_prompt_btn.setVisible(expanded)
         self.favorite_prompt_btn.setVisible(expanded)
         if self.lang == "en":
             self.prompt_toggle_btn.setText("− Prompt Preview" if expanded else "+ Prompt Preview")
@@ -1126,6 +1409,7 @@ class MainWindow(QMainWindow):
             self.prompt_toggle_btn.setText("− Превью промта" if expanded else "+ Превью промта")
 
     def _toggle_smart_panel(self, expanded: bool) -> None:
+        self.smart_apply_btn.setVisible(expanded)
         self.smart_additions_edit.setVisible(expanded)
         if self.lang == "en":
             self.smart_toggle_btn.setText("− Smart Additions" if expanded else "+ Smart Additions")
@@ -1133,6 +1417,7 @@ class MainWindow(QMainWindow):
             self.smart_toggle_btn.setText("− Smart-добавления" if expanded else "+ Smart-добавления")
 
     def _toggle_warnings_panel(self, expanded: bool) -> None:
+        self.warning_close_btn.setVisible(expanded)
         self.warning_details_edit.setVisible(expanded)
         if self.lang == "en":
             self.warnings_toggle_btn.setText("− Warnings" if expanded else "+ Warnings")
@@ -1223,6 +1508,7 @@ class MainWindow(QMainWindow):
         self.theme_combo.blockSignals(False)
 
         card_size_items = [
+            ("compact", "Compact" if self.lang == "en" else "Компактный"),
             ("small", "Small" if self.lang == "en" else "Маленький"),
             ("medium", "Medium" if self.lang == "en" else "Средний"),
             ("large", "Large" if self.lang == "en" else "Большой"),
@@ -1250,6 +1536,11 @@ class MainWindow(QMainWindow):
                 else "Эти теги помогают направить характер сведения и мастеринга, но не гарантируют настоящий мастеринг. Для лучшего результата используй 2-5 quality-тегов, а не весь список сразу."
             )
         )
+        self.collection_section_label.setText("Collections" if self.lang == "en" else "Коллекции")
+        self.filters_label.setText("Filters" if self.lang == "en" else "Фильтры")
+        self.bgm_label.setText("Background music" if self.lang == "en" else "Фоновая музыка")
+        self.structure_label.setText("Structure" if self.lang == "en" else "Структура")
+        self.style_label.setText("Style" if self.lang == "en" else "Стиль")
         self.import_btn.setText(t(self.lang, "import_json"))
         self.export_all_btn.setText(t(self.lang, "export_all"))
         self.export_tokens_btn.setText(t(self.lang, "export_tokens"))
@@ -1264,11 +1555,16 @@ class MainWindow(QMainWindow):
         self.undo_smart_btn.setText(t(self.lang, "undo_smart"))
         self.random_btn.setText(t(self.lang, "random"))
         self.clear_btn.setText(t(self.lang, "clear"))
-        self.copy_btn.setText(t(self.lang, "copy"))
-        self.copy120_btn.setText(t(self.lang, "copy120"))
-        self.favorite_prompt_btn.setText(t(self.lang, "favorite"))
-        self.collection_apply_btn.setText(t(self.lang, "apply"))
-        self.quality_apply_btn.setText(t(self.lang, "apply"))
+        self.apply_btn.setText("✓ Apply" if self.lang == "en" else "✓ Применить")
+        self.options_btn.setText("⚙ Options" if self.lang == "en" else "⚙ Опции")
+        self.quick_import_btn.setText("⬆")
+        self.quick_export_btn.setText("⬇")
+        self.copy_btn.setText("📋")
+        self.copy120_btn.setText("120")
+        self.clear_prompt_btn.setText("🗑")
+        self.favorite_prompt_btn.setText("☆")
+        self.collection_apply_btn.setText("✓")
+        self.quality_apply_btn.setText("✓")
         self.filter_selected_only.setText("Selected only" if self.lang == "en" else "Только выбранные")
         self.filter_favorites_only.setText("Favorites" if self.lang == "en" else "Только избранные")
         self.filter_recent_only.setText("Recently used" if self.lang == "en" else "Недавно использованные")
@@ -1297,10 +1593,11 @@ class MainWindow(QMainWindow):
             "Date",
             "Actions",
         ])
+        self._update_collection_counts()
         if self.sidebar_toggle_btn.isChecked():
-            self.sidebar_toggle_btn.setText("− Categories" if self.lang == "en" else "− Категории")
+            self.sidebar_toggle_btn.setText("− Filters" if self.lang == "en" else "− Фильтры")
         else:
-            self.sidebar_toggle_btn.setText("+ Categories" if self.lang == "en" else "+ Категории")
+            self.sidebar_toggle_btn.setText("+ Filters" if self.lang == "en" else "+ Фильтры")
         if self.prompt_toggle_btn.isChecked():
             self.prompt_toggle_btn.setText("− Prompt Preview" if self.lang == "en" else "− Превью промта")
         else:
@@ -1330,26 +1627,33 @@ class MainWindow(QMainWindow):
         while self.tab_bar.count() > 0:
             self.tab_bar.removeTab(0)
         labels = {
-            "genres": "Genres",
+            "all": "All" if self.lang == "en" else "Все",
+            "genres": "Genres" if self.lang == "en" else "Жанры",
             "quality": (
                 "Sound · Quality / Mix / Mastering"
                 if self.lang == "en"
                 else "Звук · Качество / Сведение / Мастеринг"
             ),
-            "instruments": "Instruments",
-            "vocals": "Vocals",
-            "mood": "Mood",
-            "texture": "Texture",
-            "fantasy": "Fantasy",
-            "horror": "Horror",
+            "instruments": "Instruments" if self.lang == "en" else "Инструменты",
+            "vocals": "Vocals" if self.lang == "en" else "Вокал",
+            "mood": "Mood" if self.lang == "en" else "Настроение",
+            "texture": "Techniques" if self.lang == "en" else "Техники",
+            "fantasy": "Themes" if self.lang == "en" else "Темы",
+            "horror": "Sounds" if self.lang == "en" else "Звуки",
             "hiphop": "Hip-Hop",
-            "ambient": "Ambient",
-            "game_bgm": "Game BGM",
+            "ambient": "Atmospheres" if self.lang == "en" else "Атмосферы",
+            "game_bgm": "Structures" if self.lang == "en" else "Структуры",
             "favorites": t(self.lang, "favorite"),
             "saved": t(self.lang, "saved"),
         }
         for key in self.tab_keys:
-            self.tab_bar.addTab(f"{TAB_ICONS.get(key, '•')} {labels[key]}")
+            if key == "saved":
+                count = len(self.user_prompts)
+            elif key == "favorites":
+                count = len(self.favorites)
+            else:
+                count = sum(1 for token in self._all_tokens() if self._token_in_tab(token, key))
+            self.tab_bar.addTab(f"{TAB_ICONS.get(key, '•')} {labels[key]}  {count}")
         self.tab_bar.setCurrentIndex(max(0, min(current, self.tab_bar.count() - 1)))
         self.tab_bar.blockSignals(False)
         self._on_tab_changed(self.tab_bar.currentIndex())
@@ -1586,6 +1890,8 @@ class MainWindow(QMainWindow):
         def has(*words: str) -> bool:
             return any(w in category or w in en_text or w in ru_text for w in words)
 
+        if tab_key == "all":
+            return True
         if tab_key == "favorites":
             return token["id"] in self.favorites
         if tab_key == "genres":
@@ -1674,10 +1980,12 @@ class MainWindow(QMainWindow):
             self.cards_layout.addWidget(card)
             self.cards[token["id"]] = card
 
+        self._update_collection_counts()
+
     def current_tab_key(self) -> str:
         idx = self.tab_bar.currentIndex()
         if idx < 0 or idx >= len(self.tab_keys):
-            return "genres"
+            return "all"
         return self.tab_keys[idx]
 
     def _on_tab_changed(self, index: int) -> None:
@@ -1686,7 +1994,7 @@ class MainWindow(QMainWindow):
         show_instrument_filter = current_tab == "instruments"
         show_genre_filter = current_tab == "genres"
         show_quality_filter = current_tab == "quality"
-        show_large_filters = current_tab in {"genres", "instruments", "quality"}
+        show_large_filters = current_tab in {"all", "genres", "instruments", "quality", "favorites"}
         self.instrument_group_filter_label.setVisible(show_instrument_filter)
         self.instrument_group_filter_combo.setVisible(show_instrument_filter)
         self.genre_group_filter_label.setVisible(show_genre_filter)
@@ -1722,6 +2030,8 @@ class MainWindow(QMainWindow):
                 self.favorites.add(token_id)
             self.storage.save_favorites(sorted(self.favorites))
             card.set_favorite(token_id in self.favorites)
+            self._update_collection_counts()
+            self._reload_tab_bar()
             if self.current_tab_key() == "favorites":
                 self._render_cards()
             return
@@ -2363,14 +2673,16 @@ class MainWindow(QMainWindow):
         settings.setdefault("ui_layout", {})
         if isinstance(settings["ui_layout"], dict):
             settings["ui_layout"]["main_vertical_splitter"] = self.main_vertical_splitter.sizes() if hasattr(self, "main_vertical_splitter") else [620, 240]
-            settings["ui_layout"]["top_content_splitter"] = self.top_content_splitter.sizes() if hasattr(self, "top_content_splitter") else [260, 840]
-            settings["ui_layout"]["prompt_area_splitter"] = self.prompt_area_splitter.sizes() if hasattr(self, "prompt_area_splitter") else [700, 300]
-            settings["ui_layout"]["bottom_prompt_splitter"] = self.bottom_prompt_splitter.sizes() if hasattr(self, "bottom_prompt_splitter") else [780, 420]
+            settings["ui_layout"]["content_horizontal_splitter"] = self.content_horizontal_splitter.sizes() if hasattr(self, "content_horizontal_splitter") else [240, 1120]
+            settings["ui_layout"]["right_bottom_splitter"] = self.right_bottom_splitter.sizes() if hasattr(self, "right_bottom_splitter") else [130, 130]
+            settings["ui_layout"]["bottom_splitter"] = self.bottom_splitter.sizes() if hasattr(self, "bottom_splitter") else [820, 540]
             settings["ui_layout"]["sidebar_collapsed"] = not self.sidebar_toggle_btn.isChecked() if hasattr(self, "sidebar_toggle_btn") else False
+            settings["ui_layout"]["left_sidebar_collapsed"] = not self.sidebar_toggle_btn.isChecked() if hasattr(self, "sidebar_toggle_btn") else False
             settings["ui_layout"]["prompt_collapsed"] = not self.prompt_toggle_btn.isChecked() if hasattr(self, "prompt_toggle_btn") else False
             settings["ui_layout"]["smart_collapsed"] = not self.smart_toggle_btn.isChecked() if hasattr(self, "smart_toggle_btn") else False
             settings["ui_layout"]["warnings_collapsed"] = not self.warnings_toggle_btn.isChecked() if hasattr(self, "warnings_toggle_btn") else False
             settings["ui_layout"]["saved_collapsed"] = not self.saved_toggle_btn.isChecked() if hasattr(self, "saved_toggle_btn") else False
+            settings["ui_layout"]["right_toolbar_visible"] = self.right_toolbar_toggle_btn.isChecked() if hasattr(self, "right_toolbar_toggle_btn") else True
         self.storage.save_settings(settings)
 
     def _detect_track_type_category(self) -> str:
@@ -2731,6 +3043,8 @@ class MainWindow(QMainWindow):
             actions_layout.addStretch()
 
             self.saved_table.setCellWidget(row, 2, actions_widget)
+
+        self._update_collection_counts()
 
     def _sender_row(self) -> int:
         sender = self.sender()
